@@ -6,7 +6,6 @@ Analysing statistics on the SCS length of two arbitrary sequences: The minimum, 
 
 Shortest Common Supersequences
 
-
 // Continue from here
 
 
