@@ -1,4 +1,7 @@
 #include "SCS.h"
+#include <algorithm>
+
+using namespace std;
 
 SCS::SCS(int n) : size(n)
 {
@@ -7,7 +10,7 @@ SCS::SCS(int n) : size(n)
 	for (auto i = 0; i < size; ++i)
 	{
 		solutionArray[i].resize(size, 0);
-		edgesArray[i].resize(size, -1);
+		edgesArray[i].resize(size, NO_EDGE);
 	}
 }
 
@@ -17,10 +20,33 @@ SCS::SCS(int n) : size(n)
  * @param strand1, strand2 - The DNA strands.
  * @return the length of the shortest common supersequence.
  */
-int SCS::Calculate(const std::vector<Base>& strand1, const std::vector<Base>& strand2)
+int SCS::Calculate(const vector<Base>& strand1, const vector<Base>& strand2)
 {
-	
+	// Base case
+	for (auto i = 0; i < size; ++i)
+	{
+		if (edgesArray[0][i] != NO_EDGE)
+			solutionArray[0][i] = 1;
+	}
 
+	for (auto i = 1; i < size; ++i)
+	{
+		for (auto j = 0; j < size; ++j)
+		{
+			auto lastEdgeIndex = edgesArray[i][j];
+			auto maxBeforeThisIndex = solutionArray[i - 1][j];
+			if (lastEdgeIndex == NO_EDGE)
+			{
+				solutionArray[i][j] = maxBeforeThisIndex;
+			}
+			else
+			{
+				solutionArray[i][j] = max(maxBeforeThisIndex, 1 + solutionArray[i - 1][lastEdgeIndex]);
+			}
+		}
+	}
+
+	return solutionArray[size - 1][size - 1];
 }
 
 
@@ -35,7 +61,7 @@ int SCS::Calculate(const std::vector<Base>& strand1, const std::vector<Base>& st
  *
  * @param strand1, strand2 - The DNA strands.
  */
-void SCS::Init(const std::vector<Base>& strand1, const std::vector<Base>& strand2)
+void SCS::Init(const vector<Base>& strand1, const vector<Base>& strand2)
 {
 	for (auto i = 0; i < size; ++i)
 	{
