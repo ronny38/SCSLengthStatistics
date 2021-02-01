@@ -22,11 +22,15 @@ SCS::SCS(int n) : size(n)
  */
 int SCS::Calculate(const vector<Base>& strand1, const vector<Base>& strand2)
 {
+	Init(strand1, strand2);
+
 	// Base case
 	for (auto i = 0; i < size; ++i)
 	{
 		if (edgesArray[0][i] != NO_EDGE)
 			solutionArray[0][i] = 1;
+		else
+			solutionArray[0][i] = 0;
 	}
 
 	for (auto i = 1; i < size; ++i)
@@ -41,13 +45,15 @@ int SCS::Calculate(const vector<Base>& strand1, const vector<Base>& strand2)
 			}
 			else
 			{
-				solutionArray[i][j] = max(maxBeforeThisIndex, 1 + solutionArray[i - 1][lastEdgeIndex]);
+				auto maxlastEdgeIndex = (lastEdgeIndex == 0 ? 0 : solutionArray[i - 1][lastEdgeIndex - 1]);
+				solutionArray[i][j] = max(maxBeforeThisIndex, 1 + maxlastEdgeIndex);
 			}
 		}
 	}
 
-	return solutionArray[size - 1][size - 1];
+	return (2*size - solutionArray[size - 1][size - 1]);
 }
+
 
 
 /**
@@ -65,6 +71,7 @@ void SCS::Init(const vector<Base>& strand1, const vector<Base>& strand2)
 {
 	for (auto i = 0; i < size; ++i)
 	{
+		edgesArray[i].assign(size, NO_EDGE);
 		for (auto j = 0; j < size; ++j)
 		{
 			if (j == 0)

@@ -15,6 +15,7 @@ public:
 	explicit SCS(int n);
 	~SCS() = default;
 	int Calculate(const std::vector<Base>& strand1, const std::vector<Base>& strand2);
+ 
 
 private:
 	void Init(const std::vector<Base>& strand1, const std::vector<Base>& strand2);
