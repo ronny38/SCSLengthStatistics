@@ -11,6 +11,12 @@ SCS::SCS(int n) : size(n)
 	}
 }
 
+/**
+ * Calculates the Shortest Common Supersequence's Length.
+ *
+ * @param strand1, strand2 - The DNA strands.
+ * @return the length of the shortest common supersequence.
+ */
 int SCS::Calculate(const std::vector<Base>& strand1, const std::vector<Base>& strand2)
 {
 	
@@ -21,11 +27,11 @@ int SCS::Calculate(const std::vector<Base>& strand1, const std::vector<Base>& st
 /**
  * Initializes an inner data structure.
  * 
- * This is a 2D array, where cell [i][j] holds the index of the highest k
- * such that k isn't larger than j, and there is an edge between cell i in strand1 and cell k in strand2.
+ * This is a 2D array, where entry [i][j] holds the index of the highest k
+ * such that k isn't larger than j, and there is an edge between entry i in strand1 and entry k in strand2.
  * If there's no such edge, it holds -1.
  * 
- * We define an edge between cell i and cell j in two strands, if both cells contain the same DNA base.
+ * We define an edge between entry i and entry j in two strands, if both cells contain the same DNA base.
  *
  * @param strand1, strand2 - The DNA strands.
  */
