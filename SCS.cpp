@@ -18,9 +18,17 @@ int SCS::Calculate(const std::vector<Base>& strand1, const std::vector<Base>& st
 }
 
 
-/*
-  
-*/
+/**
+ * Initializes an inner data structure.
+ * 
+ * This is a 2D array, where cell [i][j] holds the index of the highest k
+ * such that k isn't larger than j, and there is an edge between cell i in strand1 and cell k in strand2.
+ * If there's no such edge, it holds -1.
+ * 
+ * We define an edge between cell i and cell j in two strands, if both cells contain the same DNA base.
+ *
+ * @param strand1, strand2 - The DNA strands.
+ */
 void SCS::Init(const std::vector<Base>& strand1, const std::vector<Base>& strand2)
 {
 	for (auto i = 0; i < size; ++i)

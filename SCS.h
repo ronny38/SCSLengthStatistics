@@ -2,6 +2,13 @@
 #include <vector>
 #include "SCS/Common.h"
 
+
+/**
+ * Implementation of a solution for the Shortest Common Supersequence's Length problem.
+ *
+ * Given two strands, this class finds the length of their shortest common supersequence.
+ * It uses dynamic programming in order to provide a soultion withing a time complexity of O(n^2).
+ */
 class SCS
 {
 public:
