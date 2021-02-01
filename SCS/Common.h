@@ -1,11 +1,54 @@
-#pragma once
+#ifndef COMMON_H
+#define COMMON_H
 #include <vector>
 
 enum Base {A, C, G, T};
 const int NO_EDGE = -1;
 
+static void IncrementIndex(Base& val)
+{
+	switch (val)
+	{
+	case A:
+		val = C;
+		break;
+	case C:
+		val = G;
+		break;
+	default:
+		val = T;
+		break;
+	}
+}
 
-static bool IncrementIndex(std::vector<Base>& vec, int index)
+static bool IncrementInnerS1(std::vector<Base>& vec, int index, bool isAC)
+{
+	if (index <= 2 && (isAC && vec[index] == C || !isAC && vec[index] == T))
+	{
+		return false;
+	}
+
+	if (vec[index] != T)
+	{
+		IncrementIndex(vec[index]);
+		return true;
+	}
+	else
+	{
+		vec[index] = A;
+		return IncrementInnerS1(vec, index - 1, isAC);
+	}
+}
+
+static bool IncrementS1(std::vector<Base>& vec, bool isAC)
+{
+	return IncrementInnerS1(vec, vec.size() - 1, isAC);
+}
+
+
+
+
+static bool IncrementInnerS2(std::vector<Base>& vec, int index)
 {
 	if (index < 0)
 	{
@@ -14,28 +57,19 @@ static bool IncrementIndex(std::vector<Base>& vec, int index)
 
 	if (vec[index] != T)
 	{
-		switch (vec[index])
-		{
-		case A:
-			vec[index] = C;
-			break;
-		case C:
-			vec[index] = G;
-			break;
-		default:
-			vec[index] = T;
-			break;
-		}
+		IncrementIndex(vec[index]);
 		return true;
 	}
 	else
 	{
 		vec[index] = A;
-		return IncrementIndex(vec, index - 1);
+		return IncrementInnerS2(vec, index - 1);
 	}
 }
 
-bool Increment(std::vector<Base>& vec)
+static bool IncrementS2(std::vector<Base>& vec)
 {
-	return IncrementIndex(vec, vec.size() - 1);
+	return IncrementInnerS2(vec, vec.size() - 1);
 }
+
+#endif

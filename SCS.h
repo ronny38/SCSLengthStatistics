@@ -1,4 +1,7 @@
-#pragma once
+#ifndef SCS_H
+#define SCS_H
+
+
 #include <vector>
 #include "SCS/Common.h"
 
@@ -24,3 +27,5 @@ private:
 	std::vector<std::vector<int>> edgesArray;
 	int size;
 };
+
+#endif // !1
