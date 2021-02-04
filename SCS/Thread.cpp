@@ -5,16 +5,16 @@
 #include <fstream>
 
 #include <iostream>
+#include "../debug_func.h"
 
 using namespace std;
 
-void Func(int n, vector<uint64_t>* hist, Base firstBase, bool isAC)
-{
+void Func(int n, vector<uint64_t>* hist, Base firstBase, bool isAC) {
 	SCS scs(n);
 	vector<Base> s1, s2;
 	s1.resize(n, A);
-	s1[1] = firstBase;
-	s1[2] = (isAC ? A : G);
+	s1[0] = firstBase;
+	s1[1] = (isAC ? A : G);
 	hist->resize(n + 1, 0);
 
 	do
@@ -23,8 +23,27 @@ void Func(int n, vector<uint64_t>* hist, Base firstBase, bool isAC)
 		do
 		{
 			(*hist)[scs.Calculate(s1, s2) - n]++;
-		} while (IncrementS2(s2));
-	} while (IncrementS1(s1, isAC));
+		} while (Increment2(s2));
+	} while (Increment(s1, isAC));
+//
+//}
+//    SCS scs(n);
+//    vector<Base> s1, s2;
+//    s1.resize(n, A);
+//    s1[0] = firstBase;
+//    hist->resize(n + 1, 0);
+//
+//    do
+//    {
+//        s2 = s1;
+////        print_strand(s1);
+//        do
+//        {
+//            (*hist)[scs.Calculate(s1, s2) - n]++;
+////            print_strand(s2);
+////            cout<<"----------------"<<endl;
+//        } while (Increment2(s2));
+//    } while (Increment(s1));
 
 }
 
@@ -59,15 +78,27 @@ int main()
 	ofstream file(fileName + ".csv", ofstream::app | ofstream::out);
 	file << "SCS Length,Count" << endl;
 
-	for (auto i = 0; i <= n; ++i)
-	{
-		uint64_t sum = 0;
-		for (auto j = 0; j < 8; ++j)
-		{
-			sum += hists[j][i];
-		}
-		file << to_string(i + n) << "," << to_string(sum) << endl;
-	}
-	file.close();
+//	for (auto i = 0; i <= n; ++i)
+//	{
+//		uint64_t sum = 0;
+//		for (auto j = 0; j < 8; ++j)
+//		{
+//			sum += hists[j][i];
+//		}
+//        cout<<i<<" : "<<sum<<endl;
+//		file << to_string(i + n) << "," << to_string(sum*4) << endl;
+//	}
+    for (auto i = 0; i <= n; ++i)
+    {
+        uint64_t sum = 0;
+        for (auto j = 0; j < 8; ++j)
+        {
+            sum += hists[j][i];
+        }
+//        cout<<i<<" : "<<sum<<endl;
+        file << to_string(i + n) << "," << to_string(sum) << endl;
+    }
+    file.close();
+
 
 }
