@@ -8,44 +8,6 @@
 
 using namespace std;
 
-char getBase(int num)
-{
-	if (num == 0) return 'A';
-	if (num == 1) return 'C';
-	if (num == 2) return 'G';
-	return 'T';
-}
-
-string getStrand(const vector<Base>& vec)
-{
-	string res;
-	for (auto& b : vec) res += getBase(b);
-	return res;
-}
-
-void Func2(int n, Base firstBase, bool isAC, const string& fileName)
-{
-	SCS scs(n);
-	vector<Base> s1, s2;
-	s1.resize(n, A);
-	s1[1] = firstBase;
-	s1[2] = (isAC ? A : G);
-
-	ofstream file(fileName + ".csv", ofstream::app | ofstream::out);
-	file << "n,SCS Length" << endl;
-	do
-	{
-		s2 = s1;
-		do
-		{
-			file << n << "," << scs.Calculate(s1, s2) << endl;
-		} while (IncrementS2(s2));
-	} while (IncrementS1(s1, isAC));
-
-	file.close();
-}
-
-
 void Func(int n, vector<uint64_t>* hist, Base firstBase, bool isAC)
 {
 	SCS scs(n);
@@ -68,11 +30,11 @@ void Func(int n, vector<uint64_t>* hist, Base firstBase, bool isAC)
 
 int main()
 {
-	int n = 10;
+	int n = 8;
 	vector<thread> workers;
 	bool isAC = true;
 	Base secondBase = A;
-	string fileName = "C:\\Hi\\tempN=" + to_string(n);
+	string fileName = "C:\\Users\\oref1\\Technion\\Sem5\\SCS\\temp\\tempN=" + to_string(n);
 	int fileNumber = 0;
 	vector<vector<uint64_t>> hists;
 	hists.resize(8);
