@@ -1,11 +1,13 @@
 
+N8.data <- read.csv("C:/Users/oref1/Technion/Sem5/SCS/temp/dna/tempN=8.csv")
+
 #mean calculation
 n3.mean = weighted.mean(tempN_3$`SCS Length`, tempN_3$Count)
 n4.mean = weighted.mean(tempN_4$`SCS Length`, tempN_4$Count)
 n5.mean = weighted.mean(tempN_5$`SCS Length`, tempN_5$Count)
 n6.mean = weighted.mean(tempN_6$`SCS Length`, tempN_6$Count)
 n7.mean = weighted.mean(tempN_7$`SCS Length`, tempN_7$Count)
-n8.mean = weighted.mean(tempN_8$`SCS Length`, tempN_8$Count)
+n8.mean = weighted.mean(as.numeric(N8.data$SCS.Length), as.numeric(N8.data$Count))
 n9.mean = weighted.mean(tempN_9$`SCS Length`, tempN_9$Count)
 
 #mean as function of n
@@ -28,7 +30,7 @@ n4.var = wtd.var(tempN_4$`SCS Length`, tempN_4$Count)
 n5.var = wtd.var(tempN_5$`SCS Length`, tempN_5$Count)
 n6.var = wtd.var(tempN_6$`SCS Length`, tempN_6$Count)
 n7.var = wtd.var(tempN_7$`SCS Length`, tempN_7$Count)
-n8.var = wtd.var(tempN_8$`SCS Length`, tempN_8$Count)
+n8.var = wtd.var(as.numeric(N8.data$SCS.Length), as.numeric(N8.data$Count))
 X1 = c(3, 4, 5, 6, 7, 8)
 Y1 = c(n3.var, n4.var, n5.var, n6.var, n7.var, n8.var)
 p1 = plot(X1, Y1, xlab="n", ylab="Variance SCS", col="blue")
@@ -63,7 +65,7 @@ y = dnorm(x, mean=n7.mean, sd=sqrt(n7.var))
 lines(x,y, col='blue', lwd=2)
 n = 8
 x = seq(n, 2*n, length=1000)
-n8hist = plot(y=tempN_8$Count/sum(tempN_8$Count),x= tempN_8$`SCS Length`, type="h")
+n8hist = plot(y=N8.data$Count/sum(N8.data$Count),x= N8.data$SC, type="h")
 y = dnorm(x, mean=n8.mean, sd=sqrt(n8.var))
 lines(x,y, col='blue', lwd=2)
 n = 9
@@ -85,3 +87,10 @@ val=((1:n-1/2)/n)
 norm.q=qnorm(val)
 plot(norm.q,x.sort)
 abline(mean,sd,col="blue")
+
+
+n = 8
+x = seq(n, 2*n, length=1000)
+n8.hist = plot(y=N8.data$Count/sum(N8.data$Count),x= N8.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=8")
+y = dnorm(x, mean=n8.mean, sd=sqrt(n8.var))
+lines(x,y, col='blue', lwd=2)
