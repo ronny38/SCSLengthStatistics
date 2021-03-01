@@ -1,96 +1,92 @@
-
-N8.data <- read.csv("C:/Users/oref1/Technion/Sem5/SCS/temp/dna/tempN=8.csv")
+n = 9
+#reading the data
+#full data
+setwd("C:/Users/oref1/Technion/Sem5/SCS/SCSLengthStatistics/data_DNA")
+data_vec_length = c(0,0)
+data_vec_count = c(0,0)
+N3.data <- read.csv("./tempN=3.csv")
+data_vec_length <- append(data_vec_length, N3.data[1])
+data_vec_count <- append(data_vec_count, N3.data[2])
+N4.data <- read.csv("./tempN=4.csv")
+data_vec_length <- append(data_vec_length, N4.data[1])
+data_vec_count <- append(data_vec_count, N4.data[2])
+N5.data <- read.csv("./tempN=5.csv")
+data_vec_length <- append(data_vec_length, N5.data[1])
+data_vec_count <- append(data_vec_count, N5.data[2])
+N6.data <- read.csv("./tempN=6.csv")
+data_vec_length <- append(data_vec_length, N6.data[1])
+data_vec_count <- append(data_vec_count, N6.data[2])
+N7.data <- read.csv("./tempN=7.csv")
+data_vec_length <- append(data_vec_length, N7.data[1])
+data_vec_count <- append(data_vec_count, N7.data[2])
+N8.data <- read.csv("./tempN=8.csv")
+data_vec_length <- append(data_vec_length, N8.data[1])
+data_vec_count <- append(data_vec_count, N8.data[2])
+N9.data <- read.csv("./tempN=9.csv")
+data_vec_length <- append(data_vec_length, N9.data[1])
+data_vec_count <- append(data_vec_count, N9.data[2])
 
 #mean calculation
-n3.mean = weighted.mean(tempN_3$`SCS Length`, tempN_3$Count)
-n4.mean = weighted.mean(tempN_4$`SCS Length`, tempN_4$Count)
-n5.mean = weighted.mean(tempN_5$`SCS Length`, tempN_5$Count)
-n6.mean = weighted.mean(tempN_6$`SCS Length`, tempN_6$Count)
-n7.mean = weighted.mean(tempN_7$`SCS Length`, tempN_7$Count)
-n8.mean = weighted.mean(as.numeric(N8.data$SCS.Length), as.numeric(N8.data$Count))
-n9.mean = weighted.mean(tempN_9$`SCS Length`, tempN_9$Count)
+mean_vec = c()
+for (i in 3:n){
+  mean_vec <- append(mean_vec, weighted.mean(as.numeric(data_vec_length[i]$SCS.Length), as.numeric(data_vec_count[i]$Count)))
+}
 
 #mean as function of n
-X = c(3, 4, 5, 6, 7, 8)
-Y = c(n3.mean, n4.mean, n5.mean, n6.mean, n7.mean, n8.mean)
-p = plot(X, Y, xlab="n", ylab="Length SCS", col="blue")
-reg<-lm(Y ~ X)
+X = seq(3, n, by=1)
+reg<-lm(mean_vec ~ X)
+coef=coef(reg)
+main = paste0("Mean as function of n\n", "y=", round(coef[2], 3), "x+", round(coef[1],3))
+plot(X, mean_vec, xlab="n", ylab="Average Length SCS", col="blue", main=main)
 abline(reg,col="red")
-
-#distance of mean from 1.5n
-X = c(3, 4, 5, 6, 7, 8)
-Y = c(n3.mean-4.5, n4.mean-6, n5.mean-7.5, n6.mean-9, n7.mean-10.5, n8.mean-12)
-Y = abs(Y)
-p = plot(X, Y, xlab="n", ylab="Length SCS", col="blue")
 
 #variance calculation
 library(Hmisc)
-n3.var = wtd.var(tempN_3$`SCS Length`, tempN_3$Count)
-n4.var = wtd.var(tempN_4$`SCS Length`, tempN_4$Count)
-n5.var = wtd.var(tempN_5$`SCS Length`, tempN_5$Count)
-n6.var = wtd.var(tempN_6$`SCS Length`, tempN_6$Count)
-n7.var = wtd.var(tempN_7$`SCS Length`, tempN_7$Count)
-n8.var = wtd.var(as.numeric(N8.data$SCS.Length), as.numeric(N8.data$Count))
-X1 = c(3, 4, 5, 6, 7, 8)
-Y1 = c(n3.var, n4.var, n5.var, n6.var, n7.var, n8.var)
-p1 = plot(X1, Y1, xlab="n", ylab="Variance SCS", col="blue")
-reg1<-lm(Y1 ~ X1)
-abline(reg1,col="red")
+var_vec = c()
+for (i in 3:n){
+  var_vec <- append(var_vec, wtd.var(as.numeric(data_vec_length[i]$SCS.Length), as.numeric(data_vec_count[i]$Count)))
+}
+
+#variance as function of n
+reg<-lm(var_vec ~ X)
+coef=coef(reg)
+main = paste0("Var as function of n\n", "y=", round(coef[2], 3), "x+", round(coef[1],3))
+plot(X, var_vec, xlab="n", ylab="Variance Length SCS", col="blue", main=main)
+abline(reg,col="red")
 
 #data presention ad histogram
 n = 3
 x = seq(n, 2*n, length=1000)
-n3.hist = plot(y=tempN_3$Count/sum(tempN_3$Count),x= tempN_3$`SCS Length`, type="h")
-y = dnorm(x, mean=n3.mean, sd=sqrt(n3.var))
+n3.hist = plot(y=N3.data$Count/sum(N3.data$Count),x= N3.data$SCS.Length, type="h", xlab="Length SCS", ylab="Probability", main="Distribution function for n=3")
+y = dnorm(x, mean=mean_vec[n-2], sd=sqrt(var_vec[n-2]))
 lines(x,y, col='blue', lwd=2)
 n = 4
 x = seq(n, 2*n, length=1000)
-n4.hist = plot(y=tempN_4$Count/sum(tempN_4$Count),x= tempN_4$`SCS Length`, type="h")
-y = dnorm(x, mean=n4.mean, sd=sqrt(n4.var))
+n4.hist = plot(y=N4.data$Count/sum(N4.data$Count),x= N4.data$SCS.Length, type="h", xlab="Length SCS", ylab="Probability", main="Distribution function for n=4")
+y = dnorm(x, mean=mean_vec[n-2], sd=sqrt(var_vec[n-2]))
 lines(x,y, col='blue', lwd=2)
 n = 5
 x = seq(n, 2*n, length=1000)
-n5.hist = plot(y=tempN_5$Count/sum(tempN_5$Count),x= tempN_5$`SCS Length`, type="h")
-y = dnorm(x, mean=n5.mean, sd=sqrt(n5.var))
+n5.hist = plot(y=N5.data$Count/sum(N5.data$Count),x= N5.data$SCS.Length, type="h", xlab="Length SCS", ylab="Probability", main="Distribution function for n=5")
+y = dnorm(x, mean=mean_vec[n-2], sd=sqrt(var_vec[n-2]))
 lines(x,y, col='blue', lwd=2)
 n = 6
 x = seq(n, 2*n, length=1000)
-n6.hist = plot(y=tempN_6$Count/sum(tempN_6$Count),x= tempN_6$`SCS Length`, type="h")
-y = dnorm(x, mean=n6.mean, sd=sqrt(n6.var))
+n6.hist = plot(y=N6.data$Count/sum(N6.data$Count),x= N6.data$SCS.Length, type="h", xlab="Length SCS", ylab="Probability", main="Distribution function for n=6")
+y = dnorm(x, mean=mean_vec[n-2], sd=sqrt(var_vec[n-2]))
 lines(x,y, col='blue', lwd=2)
 n = 7
 x = seq(n, 2*n, length=1000)
-n7.hist = plot(y=tempN_7$Count/sum(tempN_7$Count),x= tempN_7$`SCS Length`, type="h")
-y = dnorm(x, mean=n7.mean, sd=sqrt(n7.var))
+n7.hist = plot(y=N7.data$Count/sum(N7.data$Count),x= N7.data$SCS.Length, type="h", xlab="Length SCS", ylab="Probability", main="Distribution function for n=7")
+y = dnorm(x, mean=mean_vec[n-2], sd=sqrt(var_vec[n-2]))
 lines(x,y, col='blue', lwd=2)
 n = 8
 x = seq(n, 2*n, length=1000)
-n8hist = plot(y=N8.data$Count/sum(N8.data$Count),x= N8.data$SC, type="h")
-y = dnorm(x, mean=n8.mean, sd=sqrt(n8.var))
+n8.hist = plot(y=N8.data$Count/sum(N8.data$Count),x= N8.data$SCS.Length, type="h", xlab="Length SCS", ylab="Probability", main="Distribution function for n=8")
+y = dnorm(x, mean=mean_vec[n-2], sd=sqrt(var_vec[n-2]))
 lines(x,y, col='blue', lwd=2)
 n = 9
 x = seq(n, 2*n, length=1000)
-n9.hist = plot(y=tempN_9$Count/sum(tempN_9$Count),x= tempN_9$`SCS Length`, type="h")
-y = dnorm(x, mean=n9.mean, sd=sqrt(n9.var))
-lines(x,y, col='blue', lwd=2)
-
-#qqplot
-data = tempN_8
-mean = n8.mean
-sd = sqrt(n8.var)
-x.sort = c()
-for (i in 1:length(data$Count)){
-  x.sort = c(x.sort, rep.int(data$`SCS Length`[i], data$Count[i]))
-}
-n=length(x.sort)
-val=((1:n-1/2)/n)
-norm.q=qnorm(val)
-plot(norm.q,x.sort)
-abline(mean,sd,col="blue")
-
-
-n = 8
-x = seq(n, 2*n, length=1000)
-n8.hist = plot(y=N8.data$Count/sum(N8.data$Count),x= N8.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=8")
-y = dnorm(x, mean=n8.mean, sd=sqrt(n8.var))
+n9.hist = plot(y=N9.data$Count/sum(N9.data$Count),x= N9.data$SCS.Length, type="h", xlab="Length SCS", ylab="Probability", main="Distribution function for n=9")
+y = dnorm(x, mean=mean_vec[n-2], sd=sqrt(var_vec[n-2]))
 lines(x,y, col='blue', lwd=2)
