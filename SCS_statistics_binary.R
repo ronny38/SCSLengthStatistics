@@ -1,12 +1,12 @@
-# Statistics about the SCS data.
+# Statistics about the SCS data for the binary case
 
 # Global parameters
 min_n = 4 # Minimum length of strands
-max_n = 29 # Maximum length of strands
+max_n = 20 # Maximum length of strands
 
 #' Change the directory
 #' 
-#' @param git_dir directory of the git project directory
+#' @param git_dir path of the git project directory
 #' @examples
 #' change_dir("C:/Users/IsrealIsreali/Coding")
 change_dir <- function(git_dir){
@@ -19,7 +19,7 @@ length_vec = seq(1, min_n-1, by=1)
 count_vec = seq(1, min_n-1, by=1)
 data_vec = seq(1, min_n-1, by=1)
 
-# Reading the data form the csv files
+# Reading the data from the csv files
 # Full data until 20, randomized data from 21
 for (i in min_n:max_n){
   file_name = paste0("./N=", i, ".csv")
@@ -34,12 +34,14 @@ for (i in min_n:max_n){
   mean_vec[i] <- weighted.mean(as.numeric(length_vec[i]$SCS.Length), as.numeric(count_vec[i]$Count))
 }
 
-# Representing mean as function of strand length
-X = seq(min_n, max_n, by=1)
-reg<-lm(mean_vec[min_n:max_n] ~ X)
+# Representing mean as a function of strand length
+x = seq(min_n, max_n, by=1)
+y = mean_vec[min_n:max_n]
+reg<-lm(y ~ x)
 coef=coef(reg)
-main = paste0("Mean as function of strand length\n", "y=", round(coef[2], 3), "x+", round(coef[1],3))
-plot(X, mean_vec[min_n:max_n], xlab="Strand length", ylab="Average Length SCS", col="blue", main=main)
+main = paste0("Mean as a function of strand length\n", "y=", round(coef[2], 3), "x+", round(coef[1],3))
+plot(x=x, y=y, xlab="Strand length", ylab="Average Length SCS", col="blue", main=main, ylim=c(min_n,1.5*max_n), xaxp = c(min_n, max_n, max_n-min_n))
+text(x=x, y=y+2, labels=round(y, 3), cex=0.65)
 abline(reg,col="red")
 
 # Variance calculation
@@ -49,26 +51,35 @@ for (i in min_n:max_n){
   var_vec[i] <- wtd.var(as.numeric(length_vec[i]$SCS.Length), as.numeric(count_vec[i]$Count))
 }
 
-# Representing variance as function of strand length
-reg<-lm(var_vec[min_n:max_n] ~ X)
+# Representing variance as a function of strand length
+y = var_vec[min_n:max_n]
+reg<-lm(y ~ x)
 coef=coef(reg)
-main = paste0("Var as function of strand length\n", "y=", round(coef[2], 3), "x+", round(coef[1],3))
-plot(X, var_vec[min_n:max_n], xlab="Strand length", ylab="Variance Length SCS", col="blue", main=main)
+main = paste0("Variance as a function of strand length\n", "y=", round(coef[2], 3), "x+", round(coef[1],3))
+plot(x=x, y=y, xlab="Strand length", ylab="Variance Length SCS", col="blue", main=main, ylim=c(0,3), xaxp = c(min_n, max_n, max_n-min_n))
+text(x=x, y=y+0.1, labels=round(y, 3),cex=0.65)
 abline(reg,col="red")
 
 
-#' Represting histogram for specified strand length
+#' Representing distribution for specified strand length
 #' 
 #' @param N n number - strand length
-#' @param add_norm_func showing norm function accroding to mean and var
+#' @param add_norm_func show or not show normal function according to mean and var.
 #' @examples
-#' data_rep_and_hist(27)
-#' data_rep_and_hist(25, TRUE)
-data_rep_and_hist <- function(N, add_norm_func = FALSE){
+#' dist_for_n(27)
+#' dist_for_n(25, TRUE)
+dist_for_n <- function(N, add_norm_func = FALSE){
   stopifnot (N<=max_n)
-  x = seq(N, 2*N, length=1000)
-  main = paste0("Distribution function for strand length=", N)
-  plot(y=count_vec[N]$Count/sum(count_vec[N]$Count),x= length_vec[N]$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main=main)
-  y = dnorm(x, mean=mean_vec[N], sd=sqrt(var_vec[N]))
-  if (add_norm_func == TRUE){ lines(x,y, col='blue', lwd=2)}
+  main = paste0("A distribution function for strand length of ", N)
+  y = count_vec[N]$Count/sum(count_vec[N]$Count)
+  x = length_vec[N]$SCS.Length
+  plot(y=y,x=x, type="h", xlab="Length SCS", ylab="Probability", main=main, lwd=3, ylim=c(0,0.8), xaxp = c(N, 2*N, N))
+  text(x=x, y=y+0.1, labels=round(y, 3), cex=0.65)
+  if (add_norm_func == TRUE){ 
+    x = seq(N, 2*N, length=1000)
+    y = dnorm(x, mean=mean_vec[N], sd=sqrt(var_vec[N]))
+    lines(x,y, col='blue', lwd=2)
+    normal_text = paste0("Normal distiribution function\n","Mean = ", round(mean_vec[N], 3),", Var = ", round(var_vec[N], 3)) 
+    legend(x[1],0.8,c("Collected data",normal_text), lwd=c(3,2), col=c("black","blue"),  y.intersp = 0.5)
+  }
 }
