@@ -1,204 +1,74 @@
-n = 27
-#reading the data
-#full data
-setwd("C:/Users/oref1/Technion/Sem5/SCS/SCSLengthStatistics/data_binary")
-data_vec_length = c(0,0,0)
-data_vec_count = c(0,0,0)
-N4.data <- read.csv("./N=4.csv")
-data_vec_length <- append(data_vec_length, N4.data[1])
-data_vec_count <- append(data_vec_count, N4.data[2])
-N5.data <- read.csv("./N=5.csv")
-data_vec_length <- append(data_vec_length, N5.data[1])
-data_vec_count <- append(data_vec_count, N5.data[2])
-N6.data <- read.csv("./N=6.csv")
-data_vec_length <- append(data_vec_length, N6.data[1])
-data_vec_count <- append(data_vec_count, N6.data[2])
-N7.data <- read.csv("./N=7.csv")
-data_vec_length <- append(data_vec_length, N7.data[1])
-data_vec_count <- append(data_vec_count, N7.data[2])
-N8.data <- read.csv("./N=8.csv")
-data_vec_length <- append(data_vec_length, N8.data[1])
-data_vec_count <- append(data_vec_count, N8.data[2])
-N9.data <- read.csv("./N=9.csv")
-data_vec_length <- append(data_vec_length, N9.data[1])
-data_vec_count <- append(data_vec_count, N9.data[2])
-N10.data <- read.csv("./N=10.csv")
-data_vec_length <- append(data_vec_length, N10.data[1])
-data_vec_count <- append(data_vec_count, N10.data[2])
-N11.data <- read.csv("./N=11.csv")
-data_vec_length <- append(data_vec_length, N11.data[1])
-data_vec_count <- append(data_vec_count, N11.data[2])
-N12.data <- read.csv("./N=12.csv")
-data_vec_length <- append(data_vec_length, N12.data[1])
-data_vec_count <- append(data_vec_count, N12.data[2])
-N13.data <- read.csv("./N=13.csv")
-data_vec_length <- append(data_vec_length, N13.data[1])
-data_vec_count <- append(data_vec_count, N13.data[2])
-N14.data <- read.csv("./N=14.csv")
-data_vec_length <- append(data_vec_length, N14.data[1])
-data_vec_count <- append(data_vec_count, N14.data[2])
-N15.data <- read.csv("./N=15.csv")
-data_vec_length <- append(data_vec_length, N15.data[1])
-data_vec_count <- append(data_vec_count, N15.data[2])
-N16.data <- read.csv("./N=16.csv")
-data_vec_length <- append(data_vec_length, N16.data[1])
-data_vec_count <- append(data_vec_count, N16.data[2])
-N17.data <- read.csv("./N=17.csv")
-data_vec_length <- append(data_vec_length, N17.data[1])
-data_vec_count <- append(data_vec_count, N17.data[2])
-N18.data <- read.csv("./N=18.csv")
-data_vec_length <- append(data_vec_length, N18.data[1])
-data_vec_count <- append(data_vec_count, N18.data[2])
-N19.data <- read.csv("./N=19.csv")
-data_vec_length <- append(data_vec_length, N19.data[1])
-data_vec_count <- append(data_vec_count, N19.data[2])
-N20.data <- read.csv("./N=20.csv")
-data_vec_length <- append(data_vec_length, N20.data[1])
-data_vec_count <- append(data_vec_count, N20.data[2])
-#randomized data
-N21.data <- read.csv("./N=21.csv")
-data_vec_length <- append(data_vec_length, N21.data[1])
-data_vec_count <- append(data_vec_count, N21.data[2])
-N22.data <- read.csv("./N=22.csv")
-data_vec_length <- append(data_vec_length, N22.data[1])
-data_vec_count <- append(data_vec_count, N22.data[2])
-N23.data <- read.csv("./N=23.csv")
-data_vec_length <- append(data_vec_length, N23.data[1])
-data_vec_count <- append(data_vec_count, N23.data[2])
-N24.data <- read.csv("./N=24.csv")
-data_vec_length <- append(data_vec_length, N24.data[1])
-data_vec_count <- append(data_vec_count, N24.data[2])
-N25.data <- read.csv("./N=25.csv")
-data_vec_length <- append(data_vec_length, N25.data[1])
-data_vec_count <- append(data_vec_count, N25.data[2])
-N26.data <- read.csv("./N=26.csv")
-data_vec_length <- append(data_vec_length, N26.data[1])
-data_vec_count <- append(data_vec_count, N26.data[2])
-N26.data <- read.csv("./N=27.csv")
-data_vec_length <- append(data_vec_length, N26.data[1])
-data_vec_count <- append(data_vec_count, N26.data[2])
+# Statistics about the SCS data.
 
-#mean calculation
-mean_vec = c()
-for (i in 4:n){
-  mean_vec <- append(mean_vec, weighted.mean(as.numeric(data_vec_length[i]$SCS.Length), as.numeric(data_vec_count[i]$Count)))
+# Global parameters
+min_n = 4 # Minimum length of strands
+max_n = 29 # Maximum length of strands
+
+#' Change the directory
+#' 
+#' @param git_dir directory of the git project directory
+#' @examples
+#' change_dir("C:/Users/IsrealIsreali/Coding")
+change_dir <- function(git_dir){
+  dir = paste0(git_dir, "/SCSLengthStatistics/data_binary")
+  setwd(dir)
 }
 
-#mean as function of n
-X = seq(4, n, by=1)
-reg<-lm(mean_vec ~ X)
+# Creating vectors for the data
+length_vec = seq(1, min_n-1, by=1)
+count_vec = seq(1, min_n-1, by=1)
+data_vec = seq(1, min_n-1, by=1)
+
+# Reading the data form the csv files
+# Full data until 20, randomized data from 21
+for (i in min_n:max_n){
+  file_name = paste0("./N=", i, ".csv")
+  data_arg <- read.csv(file_name)
+  length_vec <- append(length_vec, data_arg[1])
+  count_vec <- append(count_vec ,data_arg[2])
+}
+
+# mean calculation
+mean_vec = seq(1, max_n, by=1)
+for (i in min_n:max_n){
+  mean_vec[i] <- weighted.mean(as.numeric(length_vec[i]$SCS.Length), as.numeric(count_vec[i]$Count))
+}
+
+# Representing mean as function of strand length
+X = seq(min_n, max_n, by=1)
+reg<-lm(mean_vec[min_n:max_n] ~ X)
 coef=coef(reg)
-main = paste0("Mean as function of n\n", "y=", round(coef[2], 3), "x+", round(coef[1],3))
-plot(X, mean_vec, xlab="n", ylab="Average Length SCS", col="blue", main=main)
+main = paste0("Mean as function of strand length\n", "y=", round(coef[2], 3), "x+", round(coef[1],3))
+plot(X, mean_vec[min_n:max_n], xlab="Strand length", ylab="Average Length SCS", col="blue", main=main)
 abline(reg,col="red")
 
-#variance calculation
+# Variance calculation
 library(Hmisc)
-var_vec = c()
-for (i in 4:n){
-  var_vec <- append(var_vec, wtd.var(as.numeric(data_vec_length[i]$SCS.Length), as.numeric(data_vec_count[i]$Count)))
+var_vec = seq(1, max_n, by=1)
+for (i in min_n:max_n){
+  var_vec[i] <- wtd.var(as.numeric(length_vec[i]$SCS.Length), as.numeric(count_vec[i]$Count))
 }
 
-#variance as function of n
-reg<-lm(var_vec ~ X)
+# Representing variance as function of strand length
+reg<-lm(var_vec[min_n:max_n] ~ X)
 coef=coef(reg)
-main = paste0("Var as function of n\n", "y=", round(coef[2], 3), "x+", round(coef[1],3))
-plot(X, var_vec, xlab="n", ylab="Variance Length SCS", col="blue", main=main)
+main = paste0("Var as function of strand length\n", "y=", round(coef[2], 3), "x+", round(coef[1],3))
+plot(X, var_vec[min_n:max_n], xlab="Strand length", ylab="Variance Length SCS", col="blue", main=main)
 abline(reg,col="red")
 
-#data presention ad histogram
-n = 4
-x = seq(n, 2*n, length=1000)
-n4.hist = plot(y=N4.data$Count/sum(N4.data$Count),x= N4.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=4")
-y = dnorm(x, mean=n4.mean, sd=sqrt(n4.var))
-lines(x,y, col='blue', lwd=2)
-n = 5
-x = seq(n, 2*n, length=1000)
-n5.hist = plot(y=N5.data$Count/sum(N5.data$Count),x= N5.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=5")
-y = dnorm(x, mean=n5.mean, sd=sqrt(n5.var))
-lines(x,y, col='blue', lwd=2)
-n = 6
-x = seq(n, 2*n, length=1000)
-n6.hist = plot(y=N6.data$Count/sum(N6.data$Count),x= N6.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=6")
-y = dnorm(x, mean=n6.mean, sd=sqrt(n6.var))
-lines(x,y, col='blue', lwd=2)
-n = 7
-x = seq(n, 2*n, length=1000)
-n7.hist = plot(y=N7.data$Count/sum(N7.data$Count),x= N7.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=7")
-y = dnorm(x, mean=n7.mean, sd=sqrt(n7.var))
-lines(x,y, col='blue', lwd=2)
-n = 8
-x = seq(n, 2*n, length=1000)
-n8.hist = plot(y=N8.data$Count/sum(N8.data$Count),x= N8.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=8")
-y = dnorm(x, mean=n8.mean, sd=sqrt(n8.var))
-lines(x,y, col='blue', lwd=2)
-n = 9
-x = seq(n, 2*n, length=1000)
-n9.hist = plot(y=N9.data$Count/sum(N9.data$Count),x= N9.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=9")
-y = dnorm(x, mean=n9.mean, sd=sqrt(n9.var))
-lines(x,y, col='blue', lwd=2)
-n = 10
-x = seq(n, 2*n, length=1000)
-n10.hist = plot(y=N10.data$Count/sum(N10.data$Count),x= N10.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=10")
-y = dnorm(x, mean=n10.mean, sd=sqrt(n10.var))
-lines(x,y, col='blue', lwd=2)
-n = 11
-x = seq(n, 2*n, length=1000)
-n11.hist = plot(y=N11.data$Count/sum(N11.data$Count),x= N11.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=11")
-y = dnorm(x, mean=n11.mean, sd=sqrt(n11.var))
-lines(x,y, col='blue', lwd=2)
-n = 12
-x = seq(n, 2*n, length=1000)
-n12.hist = plot(y=N12.data$Count/sum(N12.data$Count),x= N12.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=12")
-y = dnorm(x, mean=n12.mean, sd=sqrt(n12.var))
-lines(x,y, col='blue', lwd=2)
-n = 13
-x = seq(n, 2*n, length=1000)
-n13.hist = plot(y=N13.data$Count/sum(N13.data$Count),x= N13.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=13")
-y = dnorm(x, mean=n13.mean, sd=sqrt(n13.var))
-lines(x,y, col='blue', lwd=2)
-n = 14
-x = seq(n, 2*n, length=1000)
-n14.hist = plot(y=N14.data$Count/sum(N14.data$Count),x= N14.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=14")
-y = dnorm(x, mean=n14.mean, sd=sqrt(n14.var))
-lines(x,y, col='blue', lwd=2)
-n = 15
-x = seq(n, 2*n, length=1000)
-n15.hist = plot(y=N15.data$Count/sum(N15.data$Count),x= N15.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=15")
-y = dnorm(x, mean=n15.mean, sd=sqrt(n15.var))
-lines(x,y, col='blue', lwd=2)
-n = 16
-x = seq(n, 2*n, length=1000)
-n16.hist = plot(y=N16.data$Count/sum(N16.data$Count),x= N16.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=16")
-y = dnorm(x, mean=n16.mean, sd=sqrt(n16.var))
-lines(x,y, col='blue', lwd=2)
-n = 17
-x = seq(n, 2*n, length=1000)
-n17.hist = plot(y=N17.data$Count/sum(N17.data$Count),x= N17.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=17")
-y = dnorm(x, mean=n17.mean, sd=sqrt(n17.var))
-lines(x,y, col='blue', lwd=2)
-n = 18
-x = seq(n, 2*n, length=1000)
-n18.hist = plot(y=N18.data$Count/sum(N18.data$Count),x= N18.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=18")
-y = dnorm(x, mean=n18.mean, sd=sqrt(n18.var))
-lines(x,y, col='blue', lwd=2)
-n = 20
-x = seq(n, 2*n, length=1000)
-n20.hist = plot(y=N20.data$Count/sum(N20.data$Count),x= N20.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=20")
-y = dnorm(x, mean=mean_vec[20-3], sd=sqrt(var_vec[20-3]))
-lines(x,y, col='blue', lwd=2)
-n = 21
-x = seq(n, 2*n, length=1000)
-n21.hist = plot(y=N21.data$Count/sum(N21.data$Count),x= N21.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=21")
-y = dnorm(x, mean=n21.mean, sd=sqrt(n21.var))
-lines(x,y, col='blue', lwd=2)
-n = 22
-x = seq(n, 2*n, length=1000)
-n22.hist = plot(y=N22.data$Count/sum(N22.data$Count),x= N22.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=22")
-y = dnorm(x, mean=n22.mean, sd=sqrt(n22.var))
-lines(x,y, col='blue', lwd=2)
-n = 23
-x = seq(n, 2*n, length=1000)
-n23.hist = plot(y=N23.data$Count/sum(N23.data$Count),x= N23.data$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main="Distribution function for n=23")
-y = dnorm(x, mean=n23.mean, sd=sqrt(n23.var))
-lines(x,y, col='blue', lwd=2)
+
+#' Represting histogram for specified strand length
+#' 
+#' @param N n number - strand length
+#' @param add_norm_func showing norm function accroding to mean and var
+#' @examples
+#' data_rep_and_hist(27)
+#' data_rep_and_hist(25, TRUE)
+data_rep_and_hist <- function(N, add_norm_func = FALSE){
+  stopifnot (N<=max_n)
+  x = seq(N, 2*N, length=1000)
+  main = paste0("Distribution function for strand length=", N)
+  plot(y=count_vec[N]$Count/sum(count_vec[N]$Count),x= length_vec[N]$SCS.Length, type="h",xlab="Length SCS", ylab="Probability", main=main)
+  y = dnorm(x, mean=mean_vec[N], sd=sqrt(var_vec[N]))
+  if (add_norm_func == TRUE){ lines(x,y, col='blue', lwd=2)}
+}
