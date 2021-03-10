@@ -2,14 +2,23 @@
 Analyzing statistics on the SCS length of pairs of arbitrary sequences: The minimum, maximum, average, the variance, and the distribution.
 
 ## What's In the Box
-This repository provides code that allows you to simulate, analyze, measure and graphically present the distribution of the SCS length of binary vectors of various lengths.
+This repository provides code that allows you to simulate, analyze, measure and graphically present the distribution of the SCS length of vectors of various lengths, either in the binary alphabet or in the quaternary alphabet (DNA).
 
-The code that is written in CPP, under "SCS" directory, is highly optimized, such that the running time is reduced significantly, in comparison to the naive solution.
+
+The code can be found in the directories that begin with "Code_", and the data that was resulted in our executions can be found in the directories that begin with "Data_".
+
+The code that is written in CPP, under "Code_" directories, is highly optimized, such that the running time is reduced significantly, in comparison to the naive solution.
 The code that is written in R provides tools to analyze and present the results from the simulation.
 
 ## Getting Started
+The first step is to choose your required alphabet and open the relevant folder.
 
-The first step is to configure all required parameters in "SCS/Settings.h", as follows:
+Then, compile the code. For instance, in Linux OS the code can be compiled using the following command:
+```
+g++ -std=c++14 *.cpp -pthread -o ScsRunner
+
+```
+Now, configure all required parameters in "Settings.h" file, as follows:
 
 ### Output Directory
 ```
@@ -27,9 +36,9 @@ Each compilation of the code yields analysis of strands with a constant length.
 This parameter sets the number of subtasks that the main analysis will be divided into.
 Set optimized values to achieve shorter running time.
 
-The number of jobs must be a power of 2, so an exponent should be entered at this field.
+In the binary alphabet, the number of jobs must be a power of 2, so an exponent should be entered at this field.
 ```
-#define POWER_NUM_OF_JOBS <Log_2(Your Number of Jobs Here)>
+#define (POWER_)NUM_OF_JOBS <Your Number of Jobs Here>
 ```
 
 ### The Number of Threads
@@ -53,7 +62,7 @@ The analysis can run in two modes:
 
 This parameter sets the number of pairs to generate at each job (subtask) in the queue.
 
-Hence, when RANDOMIZE is true, POWER_NUM_OF_JOBS is 'J' and NUM_OF_RANDOMS_PER_JOB is 'R', the total amount of pairs the code will generate is 'J'x'R' (J times R).
+Hence, when RANDOMIZE is true, (POWER_)NUM_OF_JOBS is 'J' and NUM_OF_RANDOMS_PER_JOB is 'R', the total amount of pairs the code will generate is 'J'x'R' (J times R) in the quaternary alphabet, and (2^'J')x'R' in the binary alphabet.
 ```
 #define NUM_OF_RANDOMS_PER_JOB <Your Choice Here>
 ```
@@ -89,7 +98,7 @@ Showing the data for specified strand length as a distribution histogram.
 dist_for_n(<Strand Length>)
 ```
 
-It is also possible to show the normal distribution function, that matches the SCS mean 
+For comparison, it is also possible to present (alongside the resulted distribution) the normal distribution function that matches the SCS mean 
 and variance of the specified strand length, by adding "TRUE".
 For example:
 ```
