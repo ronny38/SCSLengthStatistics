@@ -62,17 +62,16 @@ Hence, when RANDOMIZE is true, (POWER_)NUM_OF_JOBS is 'J' and NUM_OF_RANDOMS_PER
 #define NUM_OF_RANDOMS_PER_JOB <Your Choice Here>
 ```
 
-
-Now, compile the code. For instance, in Linux OS the code can be compiled using the following command:
+### Compile the code
+Now, compile the code. For example, in Linux OS the code can be compiled using the following command:
 ```
 g++ -std=c++14 *.cpp -pthread -o ScsRunner
-
 ```
 
 ## Analyzing the Code
 
 There are two coding files: "SCS_statistics_binary.R" and "SCS_statistics_quaternary.R", the instructions are relevant for both. 
-The first step is to configure the directory as follows:
+The first step is to set the directory which contains the resulted data, as follows:
 
 ### Git Directory
 **Important**: Change backslashes to regular slashes.
@@ -80,7 +79,9 @@ The first step is to configure the directory as follows:
 git_dir = "<Your Path Here>"
 ```
 
-After configuring the directory, it is time to run the code and start analyzing.
+After setting the directory, it is time to run the code and start analyzing.
+
+The following methods are provided for you to analyze your results:
 
 ### Mean plot
 To represent the mean values as a function of the strand's length, run the following command:
@@ -95,16 +96,16 @@ Var_Plot()
 ```
 
 ### Distribution plot
-Showing the data for specified strand length as a distribution histogram.
+Showing the data for a specified strand's length as a distribution histogram.
 ```
-dist_for_n(<Strand Length>)
+dist_for_n(<Strand's Length>)
 ```
 
 For comparison, it is also possible to present (alongside the resulted distribution) the normal distribution function that matches the SCS mean 
-and variance of the specified strand length, by adding "TRUE".
+and variance of the specified strand's length, by adding "TRUE" as a parameter.
 For example:
 ```
-dist_for_n(<Strand Length>, TRUE)
+dist_for_n(<Strand's Length>, TRUE)
 ```
 
 ## Authors
