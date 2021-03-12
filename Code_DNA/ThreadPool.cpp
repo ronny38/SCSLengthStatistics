@@ -134,7 +134,7 @@ shared_ptr<vector<uint64_t>> ThreadPool::Join()
 * @param solutionArray - a pointer to the inner matrix that is used to solve the SCS problem. The matrix is reused for time-optimization purposes.
 * @param hist - a pointer to the histogram that this specific thread should add its results to.
 *
-* This function has been optimized to save running time. For more details please kindly check the documentation of SCS<N>::PairsToAdd.
+* This function has been optimized to save running time. For more details please check the documentation of SCS::PairsToAdd.
 */
 void doJob(uint64_t start, uint64_t end, unsigned int solutionArray[N + 1][N + 1], vector<uint64_t>* hist)
 {

@@ -13,12 +13,7 @@ The code that is written in R provides tools to analyze and present the results 
 ## Getting Started
 The first step is to choose your required alphabet and open the relevant folder.
 
-Then, compile the code. For instance, in Linux OS the code can be compiled using the following command:
-```
-g++ -std=c++14 *.cpp -pthread -o ScsRunner
-
-```
-Now, configure all required parameters in "Settings.h" file, as follows:
+Now, before compiling the code, configure all required parameters in "Settings.h" file, as follows:
 
 ### Output Directory
 ```
@@ -65,6 +60,13 @@ This parameter sets the number of pairs to generate at each job (subtask) in the
 Hence, when RANDOMIZE is true, (POWER_)NUM_OF_JOBS is 'J' and NUM_OF_RANDOMS_PER_JOB is 'R', the total amount of pairs the code will generate is 'J'x'R' (J times R) in the quaternary alphabet, and (2^'J')x'R' in the binary alphabet.
 ```
 #define NUM_OF_RANDOMS_PER_JOB <Your Choice Here>
+```
+
+
+Now, compile the code. For instance, in Linux OS the code can be compiled using the following command:
+```
+g++ -std=c++14 *.cpp -pthread -o ScsRunner
+
 ```
 
 ## Analyzing the Code
