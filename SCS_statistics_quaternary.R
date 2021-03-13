@@ -3,7 +3,7 @@
 # Global parameters
 min_n = 3 # Minimum length of strands
 max_n = 9 # Maximum length of strands
-git_dir = "C:/Users/IsrealIsreali/Coding" #path of the git project directory
+git_dir = "C:/Users/oref1/Technion/Sem5/SCS" #path of the git project directory
 
 # Change the directory
 dir = paste0(git_dir, "/SCSLengthStatistics/data_DNA")
@@ -16,7 +16,7 @@ data_vec = seq(1, min_n-1, by=1)
 
 # Reading the data from the csv files
 for (i in min_n:max_n){
-  file_name = paste0("./tempN=", i, ".csv")
+  file_name = paste0("./DNA_N=", i, ".csv")
   data_arg <- read.csv(file_name)
   length_vec <- append(length_vec, data_arg[1])
   count_vec <- append(count_vec ,data_arg[2])
@@ -86,6 +86,6 @@ dist_for_n <- function(N, add_norm_func = FALSE){
     y = dnorm(x, mean=mean_vec[N], sd=sqrt(var_vec[N]))
     lines(x,y, col='blue', lwd=2)
     normal_text = paste0("Normal distiribution function\n","Mean = ", round(mean_vec[N], 3),", Var = ", round(var_vec[N], 3)) 
-    legend(x[1],1,c("Collected data",normal_text), lwd=c(3,2), col=c("black","blue"),  y.intersp = 0.5)
+    legend(x[1],0.8,c("Collected data",normal_text), lwd=c(3,2), col=c("black","blue"),  y.intersp = 0.5)
   }
 }
