@@ -2,8 +2,8 @@
 
 # Global parameters
 min_n = 3 # Minimum length of strands
-max_n = 9 # Maximum length of strands
-git_dir = "C:/Users/oref1/Technion/Sem5/SCS" #path of the git project directory
+max_n = 15 # Maximum length of strands
+git_dir = "C:/git_repo" #path of the git project directory
 
 # Change the directory
 dir = paste0(git_dir, "/SCSLengthStatistics/data_DNA")
@@ -38,7 +38,7 @@ Mean_Plot <- function(){
   reg<-lm(y ~ x)
   coef=coef(reg)
   main = paste0("Mean as a function of strand length\n", "y=", round(coef[2], 3), "x+", round(coef[1],3))
-  plot(x=x, y=y, xlab="Strand length", ylab="Average Length SCS", col="blue", main=main, ylim=c(min_n,1.7*max_n))
+  plot(x=x, y=y, xlab="Strand length", ylab="Average Length SCS", col="blue", main=main, ylim=c(min_n,1.7*max_n), xaxp = c(min_n, max_n, max_n-min_n))
   text(x=x, y=y+0.5, labels=round(y, 3))
   abline(reg,col="red")
 }
@@ -61,7 +61,7 @@ Var_Plot <- function(){
   reg<-lm(y ~ x)
   coef=coef(reg)
   main = paste0("Variance as a function of strand length\n", "y=", round(coef[2], 3), "x+", round(coef[1],3))
-  plot(x=x, y=y, xlab="Strand length", ylab="Variance Length SCS", col="blue", main=main, ylim=c(0,1))
+  plot(x=x, y=y, xlab="Strand length", ylab="Variance Length SCS", col="blue", main=main, ylim=c(0,1.5), xaxp = c(min_n, max_n, max_n-min_n))
   text(x=x, y=y+0.1, labels=round(y, 3))
   abline(reg,col="red")
 }
@@ -86,6 +86,6 @@ dist_for_n <- function(N, add_norm_func = FALSE){
     y = dnorm(x, mean=mean_vec[N], sd=sqrt(var_vec[N]))
     lines(x,y, col='blue', lwd=2)
     normal_text = paste0("Normal distiribution function\n","Mean = ", round(mean_vec[N], 3),", Var = ", round(var_vec[N], 3)) 
-    legend(x[1],0.8,c("Collected data",normal_text), lwd=c(3,2), col=c("black","blue"),  y.intersp = 0.5)
+    legend(x[1],1,c("Collected data",normal_text), lwd=c(3,2), col=c("black","blue"),  y.intersp = 0.5)
   }
 }

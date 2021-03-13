@@ -3,7 +3,7 @@
 # Global parameters
 min_n = 4 # Minimum length of strands
 max_n = 30 # Maximum length of strands
-git_dir = "C:/Users/oref1/Technion/Sem5/SCS" #path of the git project directory
+git_dir = "C:/git_repo" #path of the git project directory
 
 # Change the directory
 dir = paste0(git_dir, "/SCSLengthStatistics/data_binary")
