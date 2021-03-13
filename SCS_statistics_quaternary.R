@@ -6,7 +6,7 @@ max_n = 15 # Maximum length of strands
 git_dir = "C:/git_repo" #path of the git project directory
 
 # Change the directory
-dir = paste0(git_dir, "/SCSLengthStatistics/data_DNA")
+dir = paste0(git_dir, "/SCSLengthStatistics/Data_DNA")
 setwd(dir)
 
 # Creating vectors for the data
